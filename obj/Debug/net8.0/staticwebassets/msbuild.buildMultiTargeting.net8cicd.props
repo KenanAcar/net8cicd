@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../build/net8cicd.props" />
+</Project>
