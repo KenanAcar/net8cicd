@@ -1,0 +1,6 @@
+@net8cicd_HostAddress = http://localhost:5105
+
+GET {{net8cicd_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
