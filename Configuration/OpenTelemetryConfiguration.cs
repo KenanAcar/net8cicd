@@ -10,8 +10,9 @@ public static class OpenTelemetryConfiguration
     public static void ConfigureOpenTelemetry(this IServiceCollection services, IConfiguration configuration)
     {
         var otelSection = configuration.GetSection("OpenTelemetry");
-        var tracingEnabled = otelSection.GetValue<bool>("Tracing:Enabled");
+        if(!otelSection.Exists()) return;
 
+        var tracingEnabled = otelSection.GetValue<bool>("Tracing:Enabled");
         if (!tracingEnabled) return;
 
         services.AddOpenTelemetry()
@@ -27,7 +28,6 @@ public static class OpenTelemetryConfiguration
                         ["shop.location"] = configuration["Shop:Location"] ?? "unknown",
                         ["shop.code"] = configuration["Shop:Code"] ?? "000"
                     }));
-
 
                 var exporter = otelSection.GetValue<string>("Tracing:Exporter")?.ToLowerInvariant();
 

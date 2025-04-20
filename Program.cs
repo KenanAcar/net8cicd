@@ -1,4 +1,16 @@
+using NLog;
+using NLog.Web;
+
+var logger = LogManager.Setup()
+    .LoadConfigurationFromFile("nlog.config")
+    .GetCurrentClassLogger();
+
+logger.Info("App starting");
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.ConfigureNLog();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,13 +35,16 @@ var summaries = new[]
 
 app.MapGet("/test", async () =>
 {
+    logger.Info("Test endpoint called");
     using var client = new HttpClient();
     var result = await client.GetStringAsync("https://example.com");
+    logger.Info(result);
     return "Traced!";
 });
 
 app.MapGet("/weatherforecast", () =>
 {
+    logger.Info("Weather forecast requested");
     var forecast =  Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
@@ -38,6 +53,8 @@ app.MapGet("/weatherforecast", () =>
             summaries[Random.Shared.Next(summaries.Length)]
         ))
         .ToArray();
+    logger.Info(forecast);
+    
     return forecast;
 })
 .WithName("GetWeatherForecast")
