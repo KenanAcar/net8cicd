@@ -272,3 +272,10 @@ __pycache__/
 # tools/
 
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore
+bin/Debug/net8.0/net8cicd.dll
+bin/Debug/net8.0/net8cicd.dll
+bin/Debug/net8.0/net8cicd.pdb
+obj/Debug/net8.0/net8cicd.AssemblyInfoInputs.cache
+obj/Debug/net8.0/net8cicd.dll
+obj/Debug/net8.0/ref/net8cicd.dll
+obj/Debug/net8.0/refint/net8cicd.dll
