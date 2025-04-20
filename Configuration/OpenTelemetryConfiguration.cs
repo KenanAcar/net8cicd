@@ -21,12 +21,12 @@ public static class OpenTelemetryConfiguration
                     .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .SetResourceBuilder(ResourceBuilder.CreateDefault()
-    .AddService(serviceName: configuration["Shop:Name"] ?? "UnknownShop")
-    .AddAttributes(new Dictionary<string, object>
-    {
-        ["shop.location"] = configuration["Shop:Location"] ?? "unknown",
-        ["shop.code"] = configuration["Shop:Code"] ?? "000"
-    }));
+                    .AddService(serviceName: configuration["Shop:Name"] ?? "UnknownShop")
+                    .AddAttributes(new Dictionary<string, object>
+                    {
+                        ["shop.location"] = configuration["Shop:Location"] ?? "unknown",
+                        ["shop.code"] = configuration["Shop:Code"] ?? "000"
+                    }));
 
 
                 var exporter = otelSection.GetValue<string>("Tracing:Exporter")?.ToLowerInvariant();
