@@ -15,19 +15,31 @@ public static class OpenTelemetryConfiguration
         var tracingEnabled = otelSection.GetValue<bool>("Tracing:Enabled");
         if (!tracingEnabled) return;
 
+        var features = otelSection.GetSection("Tracing:Features");
+
         services.AddOpenTelemetry()
             .WithTracing(tracerProviderBuilder =>
             {
-                tracerProviderBuilder
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .SetResourceBuilder(ResourceBuilder.CreateDefault()
-                    .AddService(serviceName: configuration["Shop:Name"] ?? "UnknownShop")
-                    .AddAttributes(new Dictionary<string, object>
-                    {
-                        ["shop.location"] = configuration["Shop:Location"] ?? "unknown",
-                        ["shop.code"] = configuration["Shop:Code"] ?? "000"
-                    }));
+                if (features.GetValue<bool>("AspNetCore"))
+                {
+                    tracerProviderBuilder.AddAspNetCoreInstrumentation();
+                }
+
+                if (features.GetValue<bool>("HttpClient"))
+                {
+                    tracerProviderBuilder.AddHttpClientInstrumentation();
+                }
+
+                if (features.GetValue<bool>("ResourceAttributes"))
+                {
+                    tracerProviderBuilder.SetResourceBuilder(ResourceBuilder.CreateDefault()
+                        .AddService(serviceName: configuration["Shop:Name"] ?? "UnknownShop")
+                        .AddAttributes(new Dictionary<string, object>
+                        {
+                            ["shop.location"] = configuration["Shop:Location"] ?? "unknown",
+                            ["shop.code"] = configuration["Shop:Code"] ?? "000"
+                        }));
+                }
 
                 var exporter = otelSection.GetValue<string>("Tracing:Exporter")?.ToLowerInvariant();
 
