@@ -1,3 +1,4 @@
+using net8cicd.Services;
 using NLog;
 using NLog.Web;
 
@@ -17,6 +18,8 @@ builder.Host.ConfigureNLog();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureOpenTelemetry(builder.Configuration);
+builder.Services.AddSingleton<TracingService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +43,13 @@ app.MapGet("/test", async () =>
     var result = await client.GetStringAsync("https://example.com");
     logger.Info(result);
     return "Traced!";
+});
+
+app.MapGet("/sendLogs", (TracingService tracingService) =>
+{
+    tracingService.TraceSystemMetrics(); 
+    logger.Info("Hello endpoint called");
+    return "Hello World!";
 });
 
 app.MapGet("/weatherforecast", () =>

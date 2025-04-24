@@ -38,7 +38,7 @@ public static class OpenTelemetryConfiguration
                         {
                             ["shop.location"] = configuration["Shop:Location"] ?? "unknown",
                             ["shop.code"] = configuration["Shop:Code"] ?? "000"
-                        }));
+                        })).AddSource("net8cicd-service");
                 }
 
                 var exporter = otelSection.GetValue<string>("Tracing:Exporter")?.ToLowerInvariant();
@@ -56,7 +56,8 @@ public static class OpenTelemetryConfiguration
                             tracerProviderBuilder.AddOtlpExporter(opt =>
                             {
                                 opt.Endpoint = new Uri(endpoint);
-                            });
+                                opt.Protocol = OtlpExportProtocol.Grpc; // 💡 IMPORTANT for SkyWalking
+                                });
                         }
                         else
                         {
