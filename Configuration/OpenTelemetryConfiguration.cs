@@ -5,6 +5,7 @@ using OpenTelemetry.Trace;
 using OpenTelemetry.Exporter;
 using System;
 
+namespace net8cicd.Configuration;
 public static class OpenTelemetryConfiguration
 {
     public static void ConfigureOpenTelemetry(this IServiceCollection services, IConfiguration configuration)

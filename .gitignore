@@ -288,3 +288,4 @@ obj/Debug/net8.0/net8cicd.sourcelink.json
 obj/Debug/net8.0/ref/net8cicd.dll
 obj/Debug/net8.0/refint/net8cicd.dll
 internal-nlog.txt
+.sonarqube/
