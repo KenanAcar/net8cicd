@@ -68,7 +68,7 @@ namespace net8cicd.Services
         }));
                 }
 
-                if (activeAlarms.Any())
+                if (activeAlarms.Count > 0)
                 {
                     alarmSpan?.SetStatus(ActivityStatusCode.Error, "Alarms detected during check.");
                 }
@@ -76,14 +76,14 @@ namespace net8cicd.Services
 
         }
 
-        private List<(string Name, string Level, string Message)> CheckAlarms()
+        private static List<(string Name, string Level, string Message)> CheckAlarms()
         {
             // Placeholder — you can wire this to your actual alarm logic
-            return new List<(string, string, string)>
-    {
+            return
+    [
         ("Low Disk Space", "Warning", "Only 5% disk space left on D:"),
         ("POS Offline", "Critical", "POS terminal #3 is unreachable.")
-    };
+    ];
         }
 
 
